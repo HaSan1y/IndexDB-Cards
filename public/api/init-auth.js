@@ -142,17 +142,14 @@ module.exports = async (req, res) => {
 	}
 	console.log(`  Using Credential ID (Buffer converted to base64url for logging): ${authenticatorData.credentialID.toString("base64url")}`);
 	try {
+		// const credentialIDBuffer = Buffer.from(authenticatorData.credentialID, "base64url");
+		//const credentialIDString = authenticatorData.credentialID.toString("base64url");
 		const options = await generateAuthenticationOptions({
-			// rpID: process.env.RELAYING_PARTY_ID,
-			// allowCredentials: userPassKey.map((pk) => ({
-			// 	id: Buffer.from(pk.credentialID, "base64url"),
-			// 	type: "public-key",
-			// })),
-			// id: Buffer.from(userPassKey.credentialID, "base64url"),
 			rpID: currentRpConfig.rpId,
 			allowCredentials: [
 				{
 					id: authenticatorData.credentialID.toString("base64url"),
+					//credentialID: credentialIDString, //credentialIDBuffer, //authenticatorData.credentialID, //.toString("base64url"),
 					type: "public-key",
 					transports: authenticatorData.transports,
 				},

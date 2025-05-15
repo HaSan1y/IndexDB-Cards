@@ -173,14 +173,25 @@ module.exports = async (req, res) => {
 	}
 
 	console.log(`Attempting verification for user ${user.username} (ID: ${userId}) with challenge: ${expectedChallenge}`);
+	console.log("credentialID:", authenticatorData.credentialID.toString("base64url"));
+	console.log("authenticatorData.credentialID:", authenticatorData.credentialID);
+	console.log('authenticatorData.credentialID.toString("base64url"):', authenticatorData.credentialID.toString("base64url"));
+	console.log("webAuthnResponse.response:", webAuthnResponse.response);
+	console.log("expectedChallenge:", expectedChallenge);
+	console.log("effectiveOrigin:", effectiveOrigin);
+	console.log("currentRpConfig.rpId:", currentRpConfig.rpId);
+	// const credentialID = authenticatorData.credentialID.toString("base64url");
+	// console.log('credentialID:', credentialID);
+	//const credentialIDBuffer = Buffer.from(authenticatorData.credentialID, "base64url");
+	//console.log("credentialIDBuffer:", credentialIDBuffer);
 	try {
 		const verification = await verifyAuthenticationResponse({
-			response: webAuthnResponse.response, // Pass the nested response object
-			expectedChallenge: expectedChallenge, // Explicit for clarity
-			expectedOrigin: effectiveOrigin, // Ensure we use the variable 'effectiveOrigin' here
+			response: webAuthnResponse.response,
+			expectedChallenge: expectedChallenge,
+			expectedOrigin: effectiveOrigin,
 			expectedRPID: currentRpConfig.rpId,
 			authenticator: {
-				credentialID: authenticatorData.credentialID,
+				credentialID: authenticatorData.credentialID, // credentialIDBuffer, //.tostring("base64url"), user.passKey.id
 				credentialPublicKey: authenticatorData.credentialPublicKey,
 				counter: authenticatorData.counter,
 				transports: authenticatorData.transports,

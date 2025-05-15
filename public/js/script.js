@@ -14,7 +14,7 @@ document.addEventListener("DOMContentLoaded", () => {
 	// 	}
 
 	// --- Service Worker Registration ---
-
+	/*
 	if ("serviceWorker" in navigator) {
 		navigator.serviceWorker
 			.register("./sw.js") // Path relative to origin root
@@ -27,7 +27,7 @@ document.addEventListener("DOMContentLoaded", () => {
 	} else {
 		console.log("Service Worker not supported in this browser.");
 	}
-	// --- End Service Worker Registration ---
+	// --- End Service Worker Registration ---*/
 
 	const repoSelectElements = document.getElementsByClassName("repoSelect");
 
@@ -538,7 +538,6 @@ document.querySelector('button[id="buon"]').addEventListener("click", async () =
 			document.getElementById("adviceid").innerHTML = `Error: ${error.message}`;
 		});
 
-	// This one doesn't depend on your logic, but keep it if you want it
 	fetch("https://icanhazdadjoke.com/", {
 		headers: { Accept: "application/json" },
 	})

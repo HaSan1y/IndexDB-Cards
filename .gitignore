@@ -14,6 +14,7 @@ public/css/style.css.map
 .vscode
 *.txt
 config.js
+Sales.md
 
 # Local Netlify folder
 .netlify

@@ -113,7 +113,7 @@
 					</ul>
 				</div>
 			</div>
-			<a href="mailto:hasan.yildirim@outlook.com" class="nav-item nav-link" title="contact">Contact</a>
+			<a href="mailto:hasan.yildirim@outlook.com" class="nav-item nav-link" title="contact" hidden>Contact</a>
 		</div>
 	</nav>
 
@@ -151,22 +151,26 @@
 		<div class="modal-content">
 			<h2>Disclaimer and Liability Notice</h2>
 			<p>
-				This website contains information about job rejections, including reasons for rejection and feedback. The
-				information is shared for informational purposes only and does not constitute
-				legal advice.
+				By using this website, you agree to the following terms and conditions:
 			</p>
-			<p>
-				<strong>Liability Disclaimer:</strong> The owner of this website is not liable for any defamation, privacy
-				violations, or any other legal issues arising from the content shared on this
-				website. The information is provided without any warranties or guarantees.
-			</p>
-			<p>By proceeding, you acknowledge that you understand and agree to the terms of this disclaimer.</p>
+			<ol>
+				<li>
+					The content on this website is for informational purposes only and should not be construed as
+					advice or recommendations.
+				</li>
+				<li>
+					We do not guarantee the accuracy, completeness, or reliability of any information provided on
+					this website.
+				</li>
+				<li>
+					We are not responsible for any damages or losses that may occur as a result of using this website.
+				</li>
+			</ol>
 			<label>
 				<input type="checkbox" id="acknowledgeDisclaimer" required name="checkbox" />
 				I understand and agree to the terms of this disclaimer.
 			</label>
 			<p>If you have any questions or concerns, please contact us at [Your Contact Information].</p>
-			<!-- <span><a id="blink" href="mailto:hasan.yildirim@outlook.com">Hasan.yildirim&#64;outlook.com</a></span> -->
 			<div class="modal-footer">
 				<button type="button" id="closeDisclaimerModal" name="termsCloseBtn">Close</button>
 			</div>
@@ -220,12 +224,14 @@
 							style="width: 200px; margin: auto" nonce="abc123">
 							<option value="0">decide on which DB</option>
 							<option value="indexdb">IndexDB</option>
-							<option value="server">Server(local)</option>
-							<option data-url="https://github.com/HaSan1y/nextjs" value="htmx">HTMX?(currently "not" working due
-								to server-offline)</option>
+							<option value="server">Server(local-nodejs)</option>
+							<option data-url="https://github.com/HaSan1y/nextjs" value="htmx">HTMX?(currently disabled due
+								to server limit)</option>
 							<option value="sessiondb">Session storage</option>
 							<option value="localdb">Local storage</option>
-							<option value="cachedb">Cache? (makes website offline useable?)</option>
+							<option value="cachedb">Cache storage(currently not working, cuz it is annoying to debug if turned
+								on, write
+								me if you need it, makes website offline useable)</option>
 							<option value="socket">sockets?(currently not working due to server-offline)</option>
 						</select>
 					</div>
@@ -483,21 +489,22 @@
 					</div>
 				</div>
 				<div class="">
-					<h5 class="text-white text-lg font-semibold mb-4">Photo Gallery</h5>
+					<h5 class="text-white text-lg font-semibold mb-4">Support</h5>
 					<div class="grid grid-cols-4 gap-2 pt-2">
-						<div class="">
-							<img loading="lazy" class="img-fluid rounded p-1" src="#" alt="" />
-						</div>
-						<div class="">
-							<img loading="lazy" class="img-fluid rounded p-1" src="#" alt="" />
-						</div>
-						<div class="">
-							<img loading="lazy" class="img-fluid rounded p-1" src="#" alt="" />
+						<div>
+							<a class="gumroad-button" href="https://hadirekt.gumroad.com/l/vsdoo" title="Kaufen"
+								class="img-fluid rounded p-1">Kaufen</a>
 						</div>
 
-						<div class="">
+						<div>
 							<img loading="lazy" class="img-fluid rounded p-1" src="#" alt="" />
 						</div>
+						<a href='https://ko-fi.com/00101' target='_blank'>
+							<img height='36' style='border:0' src='https://cdn.ko-fi.com/cdn/kofi5.png' alt='Ko-fi' />
+						</a>
+						<!-- <div>
+							<img loading="lazy" class="img-fluid rounded p-1" src="#" alt="" />
+						</div> -->
 					</div>
 				</div>
 				<div>
@@ -535,6 +542,8 @@
 			</div>
 		</div>
 	</footer>
+	<script src="https://gumroad.com/js/gumroad.js"></script>
+
 	<script>
 		const dialog = document.getElementById("contactDialog");
 		const showButton = document.getElementById("showDialogBtn");

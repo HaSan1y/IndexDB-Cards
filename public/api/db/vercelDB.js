@@ -86,7 +86,13 @@ async function addPassKeyToUser(userId, passKeyData) {
 		console.error(`KV: Cannot add passkey, user not found: ${userId}`);
 		return null;
 	}
-	user.passKey = passKeyData;
+		user.passKey = passKeyData;
+	// user.passKey = {
+	// 	id: passKeyData.id.toString("base64url"),
+	// 	publicKey: passKeyData.publicKey.toString("base64"),
+	// 	counter: passKeyData.counter,
+	// 	transports: passKeyData.transports,
+	// }; 
 	await kv.set(`user:${userId}`, user);
 	console.log(`KV: Passkey added/updated for user ${userId}.`);
 	return user;
