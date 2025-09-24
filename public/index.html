@@ -48,6 +48,7 @@
 	<!-- A resource is blocked by OpaqueResponseBlocking. cuz google-translate sends data/script? to my unopen csp/meta/mimetype thx google for making my consolelog-output full of shit-->
 	<!-- <script src="https://unpkg.com/boxicons@2.1.4/dist/boxicons.js"></script> err-->
 	<!-- <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.4.1/font/bootstrap-icons.css" rel="stylesheet" crossorigin="anonymous" type="text/css" /> -->
+	<link rel="stylesheet" href="./css/norm.css" type="text/css" />
 	<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.10.0/css/all.min.css" rel="stylesheet"
 		type="text/css" />
 	<!-- <link rel="preconnect" href="https://fonts.googleapis.com" /> -->
@@ -389,7 +390,7 @@
 				<button hx-get="/api/htmx-joke" hx-trigger="click" id="htmx-proxy" hidden hx-target="#joke"
 					hx-swap="innerHTML" hx-indicator="#indicator" class="btn btn-primary">
 					Click Me!
-					<img class="htmx-indicator" id="indicator" src="image/favicon-16x16.png" alt="Loading..." />
+					<img class="htmx-indicator" id="indicator" src="image/icons/favicon-16x16.png" alt="Loading..." />
 				</button>
 				<div hide id="joke"></div>
 				<!-- hx-trigger="click[ctrlKey]" hx-trigger="every 2s"-->
@@ -497,7 +498,7 @@
 						</div>
 
 						<div>
-							<img loading="lazy" class="img-fluid rounded p-1" src="#" alt="" />
+							<!-- <img loading="lazy" class="img-fluid rounded p-1" src="#" alt="" /> -->
 						</div>
 						<a href='https://ko-fi.com/00101' target='_blank'>
 							<img height='36' style='border:0' src='https://cdn.ko-fi.com/cdn/kofi5.png' alt='Ko-fi' />
