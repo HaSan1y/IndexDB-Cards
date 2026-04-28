@@ -34,8 +34,17 @@ function createCardsl(id, sentence, solution) {
 function readCards() {
 	const storedData = getStorage().getItem("sessionCardData");
 	if (storedData) {
-		sessionData = JSON.parse(storedData);
-		return sessionData.sentences;
+		let sessionData;
+		try {
+			sessionData = JSON.parse(storedData);
+		} catch (error) {
+			console.error("Error parsing session data:", error);
+			sessionData = {
+				sentences: [],
+				solutions: [],
+			};
+		}
+		return sessionData.sentences || [];
 	} else {
 		return [];
 	}

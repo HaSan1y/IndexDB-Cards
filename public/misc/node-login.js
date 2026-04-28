@@ -15,7 +15,7 @@ app.use(express.json());
 app.use(cookieParser());
 const CLIENT_URL = "https://db-2-cards.vercel.app"; //| http://localhost:5500";| not127.0.0.1 invalid
 // const RP_ID = "localhost";
-const RP_ID = "https://db-2-cards.vercel.app/api/login";
+const RP_ID = "db-2-cards.vercel.app";
 
 // After your app.listen() call
 createUser("testuser1", "test1@example.com", {
@@ -72,9 +72,14 @@ app.get(`/init-register`, async (req, res) => {
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 app.post(`/verify-register`, async (req, res) => {
-	const regInfo = JSON.parse(req.cookies.regInfo);
+	let regInfo;
+	try {
+		regInfo = JSON.parse(req.cookies.regInfo || "{}");
+	} catch (e) {
+		return res.status(400).json({ error: "Invalid registration cookie" });
+	}
 
-	if (!regInfo) {
+	if (!regInfo || !regInfo.challenge) {
 		return res.status(400).json({ error: "Registration info not found" });
 	}
 
@@ -140,9 +145,13 @@ app.get(`/init-auth`, async (req, res) => {
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 app.post(`/verify-auth`, async (req, res) => {
-	const authInfo = JSON.parse(req.cookies.authInfo);
-
-	if (!authInfo) {
+	let authInfo;
+	try {
+		authInfo = JSON.parse(req.cookies.authInfo || "{}");
+	} catch (e) {
+		return res.status(400).json({ error: "Invalid auth cookie" });
+	}
+	if (!authInfo || !authInfo.challeng) {
 		return res.status(400).json({ error: "Authentication info not found" });
 	}
 
