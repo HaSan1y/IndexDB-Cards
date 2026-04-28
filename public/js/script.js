@@ -531,11 +531,12 @@ document.querySelector('button[id="buon"]').addEventListener("click", async () =
 			return response.json();
 		})
 		.then((data) => {
-			document.getElementById("adviceid").innerHTML = data.joke || "No joke found (YoMama API)";
+			console.log(data);
+			document.getElementById("adviceid").innerText = data.joke || "No joke found (YoMama API)";
 		})
 		.catch((error) => {
 			console.error("Error fetching joke:", error);
-			document.getElementById("adviceid").innerHTML = `Error: ${error.message}`;
+			document.getElementById("adviceid").innerText = `Error: ${error.message}`;
 		});
 
 	fetch("https://icanhazdadjoke.com/", {
@@ -545,10 +546,10 @@ document.querySelector('button[id="buon"]').addEventListener("click", async () =
 			if (!response.ok) throw new Error(`Dad joke fetch failed: ${response.statusText}`);
 			return response.json();
 		})
-		.then((data) => (document.getElementById("advice").innerHTML = `${data.joke}`))
+		.then((data) => (document.getElementById("advice").innerText = `${data.joke}`))
 		.catch((error) => {
 			console.error("Error fetching dad joke:", error);
-			document.getElementById("advice").innerHTML = `Error: ${error.message}`;
+			document.getElementById("advice").innerText = `Error: ${error.message}`;
 		});
 
 	//console.log("Fetching insult from:", apiiUrl); // Log the determined URL
@@ -558,11 +559,14 @@ document.querySelector('button[id="buon"]').addEventListener("click", async () =
 			return response.json();
 		})
 		.then((data) => {
-			document.getElementById("insult").innerHTML = data.insult || "No insult found (EvilInsult API)";
+			document.getElementById("insult").innerText = data.insult || "No insult found (EvilInsult API)";
+		// wtf when i make insult.insult it says 404, when i make .insult it gives json with .insult property.
+		// console.log("JSON Data for insult:", data);
+		// console.log("JSON Data for insult .insult:", data.insult);
 		})
 		.catch((error) => {
 			console.error("Error fetching insult:", error);
-			document.getElementById("insult").innerHTML = `Error: ${error.message}`;
+			document.getElementById("insult").innerText = `Error: ${error.message}`;
 		});
 });
 
