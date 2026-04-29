@@ -6,12 +6,15 @@ module.exports = async function getData(type) {
 		if (type === "joke" || type === "jokes") {
 			const response = await fetch("https://www.yomama-jokes.com/api/random");
 			const text = await response.text();
-			return { joke: text };
+			const jsonData = JSON.parse(text);
+			return { joke: jsonData.joke };
 		} else if (type === "insult" || type === "insults") {
 			// const response = await fetch("https://evilinsult.com/api/insult");
 			const response = await fetch("https://evilinsult.com/generate_insult.php?lang=en&type=json");
 			const data = await response.text();
-			return { insult: data };
+			// turn data into JSON if it's not already
+			const jsonData = JSON.parse(data);
+			return { insult: jsonData.insult };
 		} else if (type === "image") {
 			const response = await fetch(`https://picsum.photos/200/300?random=${Date.now()}`);
 			const arrayBuffer = await response.arrayBuffer();

@@ -504,7 +504,7 @@ const apiEndpoints = {
 
 function getApiUrl(type) {
 	const origin = window.location.origin;
-	console.log("Current Origin for API lookup:", origin);
+	// console.log("Current Origin for API lookup:", origin);
 	const endpointConfig = apiEndpoints[origin];
 
 	if (endpointConfig && endpointConfig[type]) {
@@ -531,7 +531,7 @@ document.querySelector('button[id="buon"]').addEventListener("click", async () =
 			return response.json();
 		})
 		.then((data) => {
-			console.log(data);
+			// console.log(data);
 			document.getElementById("adviceid").innerText = data.joke || "No joke found (YoMama API)";
 		})
 		.catch((error) => {
@@ -560,10 +560,10 @@ document.querySelector('button[id="buon"]').addEventListener("click", async () =
 		})
 		.then((data) => {
 			document.getElementById("insult").innerText = data.insult || "No insult found (EvilInsult API)";
+		})
 		// wtf when i make insult.insult it says 404, when i make .insult it gives json with .insult property.
 		// console.log("JSON Data for insult:", data);
 		// console.log("JSON Data for insult .insult:", data.insult);
-		})
 		.catch((error) => {
 			console.error("Error fetching insult:", error);
 			document.getElementById("insult").innerText = `Error: ${error.message}`;
