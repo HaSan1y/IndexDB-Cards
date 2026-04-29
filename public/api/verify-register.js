@@ -7,15 +7,21 @@ const { Buffer } = require("buffer");
 
 const ALLOWED_ORIGINS = [
 	"http://localhost:3000",
-	"https://db-2-cards.vercel.app",
-	"https://elegant-bubblegum-a62895.netlify.app", // Netlify deployment (if used)
+	"http://127.0.0.1:3000",
 	"http://localhost:8888",
+	"http://127.0.0.1:8888",
+	"https://db-2-cards.vercel.app",
+	"https://elegant-bubblegum-a62895.netlify.app",
 ];
 
 // Relying Party configuration based on the origin
 const RP_CONFIG = {
 	"http://localhost:3000": {
 		rpId: "localhost", // RP ID for local development MUST be 'localhost'
+		rpName: "Local Dev h451",
+	},
+	"http://127.0.0.1:3000": {
+		rpId: "127.0.0.1",
 		rpName: "Local Dev h451",
 	},
 	"https://db-2-cards.vercel.app": {
@@ -28,6 +34,10 @@ const RP_CONFIG = {
 	},
 	"http://localhost:8888": {
 		rpId: "localhost",
+		rpName: "Local Netlify Dev h451",
+	},
+	"http://127.0.0.1:8888": {
+		rpId: "127.0.0.1",
 		rpName: "Local Netlify Dev h451",
 	},
 };
@@ -48,40 +58,25 @@ module.exports = async (req, res) => {
 	let isAllowed = false;
 	let effectiveOrigin = origin; // Will store the origin to use in response headers
 
-	const vercelHost = "db-2-cards.vercel.app";
-	const vercelOrigin = "https://db-2-cards.vercel.app";
-	const netlifyHost = "elegant-bubblegum-a62895.netlify.app";
-	const netlifyOrigin = "https://elegant-bubblegum-a62895.netlify.app";
-	const localhost3000Host = "localhost:3000";
-	const localhost3000Origin = "http://localhost:3000";
-	const localhost8888Host = "localhost:8888";
-	const localhost8888Origin = "http://localhost:8888";
-
-	const CURRENT_ALLOWED_ORIGINS = [localhost3000Origin, localhost8888Origin, vercelOrigin, netlifyOrigin];
+	const ORIGIN_HOST_MAP = {
+		"localhost:3000": "http://localhost:3000",
+		"127.0.0.1:3000": "http://127.0.0.1:3000",
+		"localhost:8888": "http://localhost:8888",
+		"127.0.0.1:8888": "http://127.0.0.1:8888",
+		"db-2-cards.vercel.app": "https://db-2-cards.vercel.app",
+		"elegant-bubblegum-a62895.netlify.app": "https://elegant-bubblegum-a62895.netlify.app",
+	};
+	const CURRENT_ALLOWED_ORIGINS = Object.values(ORIGIN_HOST_MAP);
 	// Check 1: Standard CORS check (Origin header is present and allowed)
 	if (origin && CURRENT_ALLOWED_ORIGINS.includes(origin)) {
 		isAllowed = true;
 		effectiveOrigin = origin;
 	}
 	// Check 2: Allow same-origin from localhost (Origin header is missing, but host matches)
-	else if (!origin) {
-		if (host === localhost3000Host) {
-			isAllowed = true;
-			effectiveOrigin = localhost3000Origin;
-			console.warn("Allowing same-origin request from host 'localhost:3000' (Origin header undefined).");
-		} else if (host === localhost8888Host) {
-			isAllowed = true;
-			effectiveOrigin = localhost8888Origin;
-			console.warn("Allowing same-origin request from host 'localhost:8888' (Origin header undefined).");
-		} else if (host === vercelHost) {
-			isAllowed = true;
-			effectiveOrigin = vercelOrigin;
-			console.warn(`Allowing same-origin request from host '${vercelHost}' (Origin header undefined).`);
-		} else if (host === netlifyHost) {
-			isAllowed = true;
-			effectiveOrigin = netlifyOrigin;
-			console.warn(`Allowing same-origin request from host '${netlifyHost}' (Origin header undefined).`);
-		}
+	else if (!origin && host && ORIGIN_HOST_MAP[host]) {
+		isAllowed = true;
+		effectiveOrigin = ORIGIN_HOST_MAP[host];
+		console.warn(`Allowing same-origin request from host '${host}' (Origin header undefined).`);
 	}
 
 	// --- CORS Preflight Handling (OPTIONS request) ---
@@ -181,7 +176,7 @@ module.exports = async (req, res) => {
 			console.log(`Registration verified for ${username}. Storing user data.`);
 
 			const passKeyDataForStorage = {
-				id: regInfoData.credential.id,
+				id: Buffer.from(regInfoData.credential.id).toString("base64url"),
 				publicKey: Buffer.from(regInfoData.credential.publicKey).toString("base64"),
 				counter: regInfoData.credential.counter,
 

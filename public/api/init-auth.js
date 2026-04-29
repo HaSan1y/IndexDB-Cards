@@ -4,28 +4,38 @@ const { getUserByUsername, getUserPassKeyForVerification, getUserById } = requir
 const bcrypt = require("bcrypt");
 
 const ALLOWED_ORIGINS = [
-	"http://localhost:3000", // Local development
-	"https://db-2-cards.vercel.app", // Vercel deployment
-	"https://elegant-bubblegum-a62895.netlify.app", // Netlify deployment (if used)
+	"http://localhost:3000",
+	"http://127.0.0.1:3000",
 	"http://localhost:8888",
+	"http://127.0.0.1:8888",
+	"https://db-2-cards.vercel.app",
+	"https://elegant-bubblegum-a62895.netlify.app",
 ];
 
 // Relying Party configuration based on the origin
 const RP_CONFIG = {
 	"http://localhost:3000": {
-		rpId: "localhost", // RP ID for local development MUST be 'localhost'
+		rpId: "localhost",
+		rpName: "Local Dev h451",
+	},
+	"http://127.0.0.1:3000": {
+		rpId: "127.0.0.1",
 		rpName: "Local Dev h451",
 	},
 	"https://db-2-cards.vercel.app": {
-		rpId: "db-2-cards.vercel.app", // RP ID for Vercel MUST match the domain
+		rpId: "db-2-cards.vercel.app",
 		rpName: "Vercel h451",
 	},
 	"https://elegant-bubblegum-a62895.netlify.app": {
-		rpId: "elegant-bubblegum-a62895.netlify.app", // RP ID for Netlify MUST match the domain
+		rpId: "elegant-bubblegum-a62895.netlify.app",
 		rpName: "Netlify h451",
 	},
 	"http://localhost:8888": {
 		rpId: "localhost",
+		rpName: "Local Netlify Dev h451",
+	},
+	"http://127.0.0.1:8888": {
+		rpId: "127.0.0.1",
 		rpName: "Local Netlify Dev h451",
 	},
 };

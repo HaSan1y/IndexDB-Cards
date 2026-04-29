@@ -86,7 +86,7 @@ async function addPassKeyToUser(userId, passKeyData) {
 		console.error(`KV: Cannot add passkey, user not found: ${userId}`);
 		return null;
 	}
-		user.passKey = passKeyData;
+	user.passKey = passKeyData;
 	// user.passKey = {
 	// 	id: passKeyData.id.toString("base64url"),
 	// 	publicKey: passKeyData.publicKey.toString("base64"),
@@ -104,27 +104,45 @@ async function getUserPassKeyForVerification(userId) {
 		console.error(`KV: User not found for verification: ${userId}`);
 		return null;
 	}
-	if (!userData || !userData.passKey || typeof userData.passKey.id !== "string" || typeof userData.passKey.publicKey !== "string" || typeof userData.passKey.counter !== "number") {
-		console.warn(`KV: User ${userId} found, but has incomplete, missing, or incorrectly typed passKey data for verification.`);
-		console.warn(`KV: passKey data:`, userData?.passKey); // Log the problematic data
+	if (!userData.passKey || typeof userData.passKey.counter !== "number") {
+		console.warn(`KV: User ${userId} found, but passKey data is missing or malformed.`);
+		console.warn(`KV: passKey data:`, userData?.passKey);
 		return null;
 	}
+	const rawId = userData.passKey.id;
+	const rawPublicKey = userData.passKey.publicKey;
+	let credentialID;
+	let credentialPublicKey;
 	try {
-		// --- Convert stored Base64/Base64URL back to Buffers ---
-		// SimpleWebAuthn expects credentialID as raw bytes (Buffer/Uint8Array)
-		// Assuming user.passKey.id is stored as Base64URL
-		const credentialID = Buffer.from(userData.passKey.id, "base64url");
-		const credentialPublicKey = Buffer.from(userData.passKey.publicKey, "base64");
+		if (typeof rawId === "string") {
+			credentialID = Buffer.from(rawId, "base64url");
+		} else if (Buffer.isBuffer(rawId) || rawId instanceof Uint8Array) {
+			credentialID = Buffer.from(rawId);
+		} else if (rawId && rawId.type === "Buffer" && Array.isArray(rawId.data)) {
+			credentialID = Buffer.from(rawId.data);
+		} else {
+			throw new Error(`Unsupported passKey.id format: ${typeof rawId}`);
+		}
+
+		if (typeof rawPublicKey === "string") {
+			credentialPublicKey = Buffer.from(rawPublicKey, "base64");
+		} else if (Buffer.isBuffer(rawPublicKey) || rawPublicKey instanceof Uint8Array) {
+			credentialPublicKey = Buffer.from(rawPublicKey);
+		} else if (rawPublicKey && rawPublicKey.type === "Buffer" && Array.isArray(rawPublicKey.data)) {
+			credentialPublicKey = Buffer.from(rawPublicKey.data);
+		} else {
+			throw new Error(`Unsupported passKey.publicKey format: ${typeof rawPublicKey}`);
+		}
 
 		return {
-			credentialID: credentialID,
-			credentialPublicKey: credentialPublicKey,
+			credentialID,
+			credentialPublicKey,
 			counter: userData.passKey.counter,
-			transports: userData.passKey.transports, // Array.isArray(userData.passKey.transports) ? userData.passKey.transports : undefined,
+			transports: userData.passKey.transports,
 		};
 	} catch (error) {
-		console.error(`KV: Error converting passKey data for userData  ${userId}:`, error);
-		console.error(`KV: Faulty passKey data:`, userData.passKey); // Log the problematic data
+		console.error(`KV: Error converting passKey data for user ${userId}:`, error);
+		console.error(`KV: Faulty passKey data:`, userData.passKey);
 		return null;
 	}
 }

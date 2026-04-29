@@ -5,14 +5,18 @@ const emailInput = document.querySelector("[data-email]");
 const modal = document.querySelector("[data-modal]");
 const closeButton = document.querySelector("[data-close]");
 
-const SERVER_URL =
-	window.location.origin === "https://db-2-cards.vercel.app"
-		? "https://db-2-cards.vercel.app/api/"
-		: window.location.origin === "http://localhost:8888"
-		? "http://localhost:8888/.netlify/functions/N"
-		: window.location.origin === "https://elegant-bubblegum-a62895.netlify.app"
-		? "https://elegant-bubblegum-a62895.netlify.app/.netlify/functions/N"
-		: "http://localhost:3000/api/"; // Default to localhost if no match
+const SERVER_URL = (() => {
+	const origin = window.location.origin;
+	if (origin === "https://db-2-cards.vercel.app") return "https://db-2-cards.vercel.app/api/";
+	if (origin === "https://elegant-bubblegum-a62895.netlify.app") return "https://elegant-bubblegum-a62895.netlify.app/.netlify/functions/N";
+	if (origin === "http://localhost:8888") return "http://localhost:8888/.netlify/functions/N";
+	if (origin === "http://localhost:3000") return "http://localhost:3000/api/";
+	if (origin === "http://127.0.0.1:3000") return "http://127.0.0.1:3000/api/";
+	if (origin === "http://127.0.0.1:8888") return "http://127.0.0.1:8888/.netlify/functions/N";
+	if (origin && origin.startsWith("http")) return `${origin}/api/`;
+	if (window.location.protocol === "file:") return "http://localhost:3000/api/";
+	return "http://localhost:3000/api/";
+})();
 
 document.addEventListener("DOMContentLoaded", function () {
 	console.log("DOM fully loaded");
@@ -168,7 +172,7 @@ async function signup(username, email, password) {
 		const effectiveApiUrl = SERVER_URL;
 
 		// 1. Initialize Registration - Pass email as query param
-		const initResponse = await fetch(`${effectiveApiUrl}init-register?email=${encodeURIComponent(email)}`, {
+		const initResponse = await fetch(`${effectiveApiUrl}init-register?email=${encodeURIComponent(email)}&username=${encodeURIComponent(username)}`, {
 			method: "GET", // Assuming init-register is GET
 			headers: { Accept: "application/json" },
 			credentials: "include",
