@@ -9,10 +9,8 @@ module.exports = async function getData(type) {
 			const jsonData = JSON.parse(text);
 			return { joke: jsonData.joke };
 		} else if (type === "insult" || type === "insults") {
-			// const response = await fetch("https://evilinsult.com/api/insult");
 			const response = await fetch("https://evilinsult.com/generate_insult.php?lang=en&type=json");
 			const data = await response.text();
-			// turn data into JSON if it's not already
 			const jsonData = JSON.parse(data);
 			return { insult: jsonData.insult };
 		} else if (type === "image") {
@@ -30,3 +28,4 @@ module.exports = async function getData(type) {
 		throw error;
 	}
 };
+// const response = await fetch("https://evilinsult.com/api/insult");
